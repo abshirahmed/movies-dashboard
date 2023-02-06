@@ -4,7 +4,7 @@ import { fetcher } from '@/lib/fetcher';
 import { MovieResponse } from '@/pages/api/movie/validators';
 
 export default async function MoviePage({ params }: { params: { id: string } }) {
-  const { Title } = await fetcher<MovieResponse>(`/api/movie?i=${params.id}`);
+  const { Title } = await fetcher<MovieResponse>(process.env.API_URL + `/api/movie?i=${params.id}`);
 
   return (
     <main>
