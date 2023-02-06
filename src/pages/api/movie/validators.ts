@@ -6,11 +6,11 @@ const MovieQueryParamsBase = z.object({
 });
 
 const MovieResponseBase = z.object({
-  Title: z.string(),
-  Year: z.string(),
-  imdbID: z.string(),
-  Type: z.string(),
-  Poster: z.string()
+  Title: z.string().optional(),
+  Year: z.string().optional(),
+  imdbID: z.string().optional(),
+  Type: z.string().optional(),
+  Poster: z.string().optional()
 });
 
 export const GetMovieQueryParams = MovieQueryParamsBase.extend({
@@ -35,39 +35,41 @@ export const SearchMovieQueryParams = MovieQueryParamsBase.extend({
 });
 
 export const GetMovieResponse = MovieResponseBase.extend({
-  Rated: z.string(),
-  Released: z.string(),
-  Runtime: z.string(),
-  Genre: z.string(),
-  Director: z.string(),
-  Writer: z.string(),
-  Actors: z.string(),
-  Plot: z.string(),
-  Language: z.string(),
-  Country: z.string(),
-  Awards: z.string(),
-  Ratings: z.array(
-    z.object({
-      Source: z.string(),
-      Value: z.string()
-    })
-  ),
-  imdbRating: z.string(),
-  imdbVotes: z.string(),
-  DVD: z.string(),
-  BoxOffice: z.string(),
-  Production: z.string(),
-  Website: z.string(),
-  Response: z.string()
-}).deepPartial();
+  Rated: z.string().optional(),
+  Released: z.string().optional(),
+  Runtime: z.string().optional(),
+  Genre: z.string().optional(),
+  Director: z.string().optional(),
+  Writer: z.string().optional(),
+  Actors: z.string().optional(),
+  Plot: z.string().optional(),
+  Language: z.string().optional(),
+  Country: z.string().optional(),
+  Awards: z.string().optional(),
+  Ratings: z
+    .array(
+      z.object({
+        Source: z.string().optional(),
+        Value: z.string().optional()
+      })
+    )
+    .optional(),
+  imdbRating: z.string().optional(),
+  imdbVotes: z.string().optional(),
+  DVD: z.string().optional(),
+  BoxOffice: z.string().optional(),
+  Production: z.string().optional(),
+  Website: z.string().optional(),
+  Response: z.string(),
+  Error: z.string().optional()
+});
 
-export const SearchMovieResponse = z
-  .object({
-    Search: z.array(MovieResponseBase),
-    totalResults: z.string(),
-    Response: z.string()
-  })
-  .deepPartial();
+export const SearchMovieResponse = z.object({
+  Search: z.array(MovieResponseBase).optional(),
+  totalResults: z.string().optional(),
+  Response: z.string(),
+  Error: z.string().optional()
+});
 
 export type MovieResponse = z.infer<typeof GetMovieResponse>;
 

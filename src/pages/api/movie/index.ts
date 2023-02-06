@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { searchMovie, getMovie } from '@/lib/omdbClient';
+import { getMovie, searchMovie } from '@/lib/omdbClient';
 import { MovieResponse, SearchResponse } from '@/pages/api/movie/validators';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<SearchResponse | MovieResponse>) {
@@ -29,6 +29,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     res.status(200).json(movie);
   } catch (error) {
     res.status(500).end();
-    return;
   }
 }
