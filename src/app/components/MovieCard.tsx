@@ -15,7 +15,7 @@ export default function MovieCard(props: MovieCardProps) {
         src={props.Poster!}
         alt=""
         width={200}
-        height={450}
+        height={300}
       />
       <div className="flex flex-col justify-between p-4 leading-normal">
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{props.Title}</h5>
