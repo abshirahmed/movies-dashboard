@@ -9,5 +9,5 @@ module.exports = {
       xl: '1440px'
     }
   },
-  plugins: []
+  plugins: [require('prettier-plugin-tailwindcss')]
 };
