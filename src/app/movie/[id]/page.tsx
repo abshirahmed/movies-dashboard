@@ -1,14 +1,19 @@
-export const runtime = 'experimental-edge'; // 'nodejs' (default) | 'experimental-edge'
-
 import { fetcher } from '@/lib/fetcher';
 import { MovieResponse } from '@/pages/api/movie/validators';
+import MovieCard from '@/app/components/MovieCard';
+
+export const runtime = 'experimental-edge'; // 'nodejs' (default) | 'experimental-edge'
 
 export default async function MoviePage({ params }: { params: { id: string } }) {
-  const { Title } = await fetcher<MovieResponse>(process.env.API_URL + `/api/movie?i=${params.id}`);
+  const movie = await fetcher<MovieResponse>(process.env.API_URL + `/api/movie?i=${params.id}`);
 
-  return (
-    <main>
-      <h1>Title: {Title}</h1>
-    </main>
-  );
+  if (movie.Response === 'False') {
+    return (
+      <main>
+        <h1>Movie not found</h1>
+      </main>
+    );
+  }
+
+  return <MovieCard {...movie} />;
 }
