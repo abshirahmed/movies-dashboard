@@ -1,11 +1,11 @@
 import axios from 'axios';
 import {
-  MovieBySearchQueryParameters,
-  MovieBySearchResponse,
-  MovieByTitleOrIdQueryParameters,
-  MovieByTitleOrIdResponse,
-  MovieFetchResponse,
-  MovieSearchResponse
+  SearchMovieQueryParams,
+  SearchMovieResponse,
+  GetMovieQueryParams,
+  GetMovieResponse,
+  MovieResponse,
+  SearchResponse
 } from '@/pages/api/movie/validators';
 import { NextApiRequest } from 'next';
 
@@ -16,22 +16,22 @@ const omdbClient = axios.create({
   }
 });
 
-export const fetchMovieByTitleOrId = async ({ query }: NextApiRequest) => {
-  const movieByTitleOrIdQueryParameters = await MovieByTitleOrIdQueryParameters.parseAsync(query);
+export const getMovie = async ({ query }: NextApiRequest) => {
+  const getMovieQueryParams = await GetMovieQueryParams.parseAsync(query);
 
-  const { data } = await omdbClient.get<MovieFetchResponse>('', {
-    params: movieByTitleOrIdQueryParameters
+  const { data } = await omdbClient.get<MovieResponse>('', {
+    params: getMovieQueryParams
   });
 
-  return MovieByTitleOrIdResponse.parseAsync(data);
+  return GetMovieResponse.parseAsync(data);
 };
 
-export const fetchMovieBySearch = async ({ query }: NextApiRequest) => {
-  const movieBySearchQueryParameters = await MovieBySearchQueryParameters.parseAsync(query);
+export const searchMovie = async ({ query }: NextApiRequest) => {
+  const searchMovieQueryParams = await SearchMovieQueryParams.parseAsync(query);
 
-  const { data } = await omdbClient.get<MovieSearchResponse>('', {
-    params: movieBySearchQueryParameters
+  const { data } = await omdbClient.get<SearchResponse>('', {
+    params: searchMovieQueryParams
   });
 
-  return MovieBySearchResponse.parseAsync(data);
+  return SearchMovieResponse.parseAsync(data);
 };

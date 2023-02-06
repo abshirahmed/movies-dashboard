@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const BaseMovieQuery = z.object({
+const MovieQueryParamsBase = z.object({
   type: z.union([z.literal('movie'), z.literal('series'), z.literal('episode')]).optional(),
   y: z.string().optional()
 });
@@ -13,7 +13,7 @@ const MovieResponseBase = z.object({
   Poster: z.string()
 });
 
-export const MovieByTitleOrIdQueryParameters = BaseMovieQuery.extend({
+export const GetMovieQueryParams = MovieQueryParamsBase.extend({
   i: z.string().optional(),
   t: z.string().optional(),
   plot: z.union([z.literal('short'), z.literal('full')]).optional()
@@ -29,12 +29,12 @@ export const MovieByTitleOrIdQueryParameters = BaseMovieQuery.extend({
   return z.NEVER;
 });
 
-export const MovieBySearchQueryParameters = BaseMovieQuery.extend({
+export const SearchMovieQueryParams = MovieQueryParamsBase.extend({
   s: z.string(),
   page: z.number().optional()
 });
 
-export const MovieByTitleOrIdResponse = MovieResponseBase.extend({
+export const GetMovieResponse = MovieResponseBase.extend({
   Rated: z.string(),
   Released: z.string(),
   Runtime: z.string(),
@@ -61,7 +61,7 @@ export const MovieByTitleOrIdResponse = MovieResponseBase.extend({
   Response: z.string()
 }).deepPartial();
 
-export const MovieBySearchResponse = z
+export const SearchMovieResponse = z
   .object({
     Search: z.array(MovieResponseBase),
     totalResults: z.string(),
@@ -69,6 +69,6 @@ export const MovieBySearchResponse = z
   })
   .deepPartial();
 
-export type MovieFetchResponse = z.infer<typeof MovieByTitleOrIdResponse>;
+export type MovieResponse = z.infer<typeof GetMovieResponse>;
 
-export type MovieSearchResponse = z.infer<typeof MovieBySearchResponse>;
+export type SearchResponse = z.infer<typeof SearchMovieResponse>;

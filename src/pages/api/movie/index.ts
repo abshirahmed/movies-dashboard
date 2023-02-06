@@ -1,11 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { fetchMovieBySearch, fetchMovieByTitleOrId } from '@/lib/omdbClient';
-import { MovieFetchResponse, MovieSearchResponse } from '@/pages/api/movie/validators';
+import { searchMovie, getMovie } from '@/lib/omdbClient';
+import { MovieResponse, SearchResponse } from '@/pages/api/movie/validators';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<MovieSearchResponse | MovieFetchResponse>
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<SearchResponse | MovieResponse>) {
   if (req.method !== 'GET') {
     res.status(405).end();
     return;
@@ -23,12 +20,12 @@ export default async function handler(
 
   try {
     if (req.query.s) {
-      const movie = await fetchMovieBySearch(req);
+      const movie = await searchMovie(req);
       res.status(200).json(movie);
       return;
     }
 
-    const movie = await fetchMovieByTitleOrId(req);
+    const movie = await getMovie(req);
     res.status(200).json(movie);
   } catch (error) {
     res.status(500).end();
