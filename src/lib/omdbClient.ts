@@ -1,37 +1,30 @@
-import axios from 'axios';
 import {
-  SearchMovieQueryParams,
-  SearchMovieResponse,
   GetMovieQueryParams,
   GetMovieResponse,
   MovieResponse,
+  SearchMovieQueryParams,
+  SearchMovieResponse,
   SearchResponse
 } from '@/pages/api/movie/validators';
 import { NextApiRequest } from 'next';
+import { fetcher } from '@/lib/fetcher';
 
-const omdbClient = axios.create({
-  baseURL: 'https://www.omdbapi.com',
-  params: {
-    apikey: process.env.OMDB_API_KEY
-  }
-});
+const baseUrl = `https://www.omdbapi.com?apiKey=${process.env.OMDB_API_KEY}`;
 
-export const getMovie = async ({ query }: NextApiRequest) => {
+export const getMovie = async ({ query }: NextApiRequest): Promise<MovieResponse> => {
   const getMovieQueryParams = await GetMovieQueryParams.parseAsync(query);
+  const url = `${baseUrl}&${new URLSearchParams(getMovieQueryParams)}`;
 
-  const { data } = await omdbClient.get<MovieResponse>('', {
-    params: getMovieQueryParams
-  });
+  const movieResponse = await fetcher<MovieResponse>(url);
 
-  return GetMovieResponse.parseAsync(data);
+  return GetMovieResponse.parseAsync(movieResponse);
 };
 
-export const searchMovie = async ({ query }: NextApiRequest) => {
+export const searchMovie = async ({ query }: NextApiRequest): Promise<SearchResponse> => {
   const searchMovieQueryParams = await SearchMovieQueryParams.parseAsync(query);
+  const url = `${baseUrl}&${new URLSearchParams(searchMovieQueryParams)}`;
 
-  const { data } = await omdbClient.get<SearchResponse>('', {
-    params: searchMovieQueryParams
-  });
+  const searchResponse = await fetcher<SearchResponse>(url);
 
-  return SearchMovieResponse.parseAsync(data);
+  return SearchMovieResponse.parseAsync(searchResponse);
 };

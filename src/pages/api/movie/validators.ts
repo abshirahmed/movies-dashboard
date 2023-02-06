@@ -31,7 +31,7 @@ export const GetMovieQueryParams = MovieQueryParamsBase.extend({
 
 export const SearchMovieQueryParams = MovieQueryParamsBase.extend({
   s: z.string(),
-  page: z.number().optional()
+  page: z.string().optional()
 });
 
 export const GetMovieResponse = MovieResponseBase.extend({
